@@ -232,3 +232,86 @@ Les messages de succès et d’erreur sont affichés sous forme de notification 
 ## Correction finale v5 — Formulaire checkout
 
 Le formulaire checkout a été corrigé afin de conserver le focus dans les champs de saisie. Cette correction améliore l'expérience utilisateur et rend la version plus stable pour la présentation du projet.
+## Introduction
+
+The objective of this project is to build a mini e-commerce application while applying DevOps practices.
+
+---
+
+## Objectif du projet
+
+The goal is to create a full-stack e-commerce application with backend, frontend, database, Docker, Git, and CI/CD integration.
+
+---
+
+## Technologies utilisées
+
+- Django REST Framework
+- React / Vite
+- SQLite / MySQL
+- Docker
+- Git / GitHub
+- GitHub Actions
+
+---
+
+## Architecture
+
+The React frontend communicates with the Django backend API using Axios requests.
+
+The Django backend communicates with the database to manage products, categories, users, and orders.
+
+---
+
+## Fonctionnalités
+
+- Product listing
+- Add products to cart
+- Checkout and order creation
+- Admin authentication
+- Products and categories management
+- Orders management
+
+---
+
+## Git workflow
+
+The project uses:
+- main
+- develop
+- feature/report
+- feature/documentation
+
+Each feature is developed in its own branch before Pull Request.
+
+---
+
+## Docker / Docker Compose
+
+Docker simplifies deployment and execution of the application.
+
+docker-compose includes:
+- backend
+- frontend
+- database
+
+---
+
+## CI/CD
+
+GitHub Actions automatically performs checks and build operations after push.
+
+---
+
+## Difficultés rencontrées
+
+- Backend/frontend configuration
+- React and Django API connection
+- Database migrations
+- Git branches organization
+
+---
+
+## Conclusion
+
+This project helped us understand the DevOps lifecycle including development, version control, Docker, CI/CD, and documentation.
