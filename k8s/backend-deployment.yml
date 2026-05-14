@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devshop-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devshop-backend
+  template:
+    metadata:
+      labels:
+        app: devshop-backend
+    spec:
+      containers:
+        - name: backend
+          image: devops-ecommerce-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_ENGINE
+              value: sqlite
+            - name: DEBUG
+              value: "1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devshop-backend-service
+spec:
+  selector:
+    app: devshop-backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP

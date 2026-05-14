@@ -1,0 +1,93 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  backend-tests:
+    name: Backend tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Django tests
+        env:
+          DB_ENGINE: sqlite
+          SECRET_KEY: ci-secret-key
+          DEBUG: "1"
+        run: |
+          python manage.py makemigrations --check --dry-run
+          python manage.py test
+
+  frontend-build:
+    name: Frontend build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build
+
+  docker-build:
+    name: Docker build
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-build]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build backend image
+        run: docker build -t devops-ecommerce-backend ./backend
+
+      - name: Build frontend image
+        run: docker build -t devops-ecommerce-frontend ./frontend
+
+      # Optional Docker Hub publish:
+      # - name: Login to Docker Hub
+      #   if: github.ref == 'refs/heads/main'
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      #
+      # - name: Push Docker images
+      #   if: github.ref == 'refs/heads/main'
+      #   run: |
+      #     docker tag devops-ecommerce-backend ${{ secrets.DOCKERHUB_USERNAME }}/devops-ecommerce-backend:latest
+      #     docker tag devops-ecommerce-frontend ${{ secrets.DOCKERHUB_USERNAME }}/devops-ecommerce-frontend:latest
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-ecommerce-backend:latest
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-ecommerce-frontend:latest
