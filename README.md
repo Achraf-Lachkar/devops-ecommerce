@@ -215,3 +215,34 @@ Les messages de succès/erreur sont maintenant affichés dans une fenêtre toast
 ## Final v5 checkout fix
 
 Cette version garde l'interface simple sans product landing page. Le problème de focus dans le formulaire checkout est corrigé : l'utilisateur peut écrire dans les champs sans devoir cliquer à nouveau après chaque caractère.
+## Project Description
+
+This project is a mini e-commerce web application built with a Django REST backend and a React frontend.
+
+The application allows users to browse products, manage a shopping cart, and place orders.
+
+---
+
+## Technologies Used
+
+- Django
+- Django REST Framework
+- React
+- Vite
+- SQLite / MySQL
+- Docker
+- GitHub Actions
+
+---
+
+## How to Run Backend
+
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py seed_demo
+python manage.py createsuperuser
+python manage.py runserver
